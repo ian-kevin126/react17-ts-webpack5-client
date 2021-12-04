@@ -20,6 +20,8 @@ const avatar = require('@/assets/East_White.jpg');
 
 /**
  * 主页面布局组件
+ * @author ian-kevin
+ * @date 2021-12-04
  * @constructor
  */
 const MainLayout: React.FC = () => {

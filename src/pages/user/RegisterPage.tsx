@@ -6,7 +6,12 @@ import {RegisterProps} from "@/interfaces/user.interface";
 import {register} from "@/store/slices";
 import {useNavigate} from 'react-router-dom';
 
-
+/**
+ * 注册页面
+ * @author ian-kevin
+ * @date 2021-12-04
+ * @constructor
+ */
 const RegisterPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

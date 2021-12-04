@@ -7,6 +7,12 @@ import {login} from "@/store/slices";
 import {useSelector} from "@/store/hooks";
 import {useNavigate} from 'react-router-dom';
 
+/**
+ * 登录页面
+ * @author ian-kevin
+ * @date 2021-12-04
+ * @constructor
+ */
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

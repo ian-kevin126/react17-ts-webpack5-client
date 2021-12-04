@@ -6,6 +6,9 @@ import {PartialRouteObject} from 'react-router'
 
 const Dashboard = lazy(async () => import(/* webpackChunkName: "dashboard" */ '@/pages/dashboard'));
 
+/**
+ * 路由列表
+ */
 const routeList: PartialRouteObject[] = [
   {
     path: 'login',
