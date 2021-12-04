@@ -7,7 +7,6 @@
       height: 64px;
       padding: 12px 20px;
       box-sizing: border-box;
-      margin-bottom: -4px;
 
       .logo {
         width: 40px;
@@ -19,18 +18,29 @@
 
   .contentLayout {
     .header {
-      padding: 0 20px 0 10px;
+      padding: 0 50px 0 10px;
       background-color: white;
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
 
+      .foldIcon {
+        font-size: 20px;
+      }
+
       .userInfo {
-        img {
+
+        .username {
+          text-align: center;
+          margin-bottom: 8px;
+        }
+
+        .avatar {
           width: 40px;
           height: 40px;
           margin-left: 16px;
+          border-radius: 50%;
         }
       }
     }

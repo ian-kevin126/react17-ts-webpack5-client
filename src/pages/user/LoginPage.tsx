@@ -14,7 +14,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     if (token != null) {
-      setTimeout(() => navigate('/'), 1500)
+      setTimeout(() => navigate('/'), 1000)
     }
   }, [token, navigate])
 
