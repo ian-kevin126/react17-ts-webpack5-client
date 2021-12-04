@@ -4,7 +4,7 @@
     "target": "esnext",
     "lib": ["esnext", "dom"],
     "baseUrl": ".",
-    "jsx": "react-jsx",
+    "jsx": "react",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
@@ -19,7 +19,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "noEmit": true
+    "noEmit": true,
+    "noImplicitAny": false
   },
   "include": [
     "src/**/*",

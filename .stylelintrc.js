@@ -13,4 +13,5 @@ module.exports = {
     '**/*.tsx',
     '**/*.ts',
   ],
+  customSyntax: 'postcss-scss'
 };
