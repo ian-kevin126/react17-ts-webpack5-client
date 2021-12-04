@@ -1,3 +1,51 @@
 .mainLayout {
   height: 100vh;
+
+  .sideMenu {
+    background-color: white;
+    .logoWrapper {
+      height: 64px;
+      padding: 12px 20px;
+      box-sizing: border-box;
+      margin-bottom: -4px;
+
+      .logo {
+        width: 40px;
+        height: 40px;
+        animation: rotate 5s linear infinite;
+      }
+    }
+  }
+
+  .contentLayout {
+    .header {
+      padding: 0 20px 0 10px;
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      .userInfo {
+        img {
+          width: 40px;
+          height: 40px;
+          margin-left: 16px;
+        }
+      }
+    }
+  }
+}
+
+
+/* 通过@keyframes规则,能够创建动画, 定义动画的名称 可自己定义 */
+@keyframes rotate {
+  /* 以百分比来规定改变发生的时间 也可以通过"from"和"to",等价于0% 和 100% */
+  0% {
+    /* rotate(2D旋转) scale(放大或者缩小) translate(移动) skew(翻转) */
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

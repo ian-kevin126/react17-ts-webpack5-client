@@ -7,6 +7,7 @@ const initialState: UserState = {
   loading: false,
   error: null,
   token: null,
+  userInfo: null
 };
 
 // 登录逻辑
@@ -37,6 +38,7 @@ export const register = createAsyncThunk(
     };
     if (parameters.phoneNo) params.phoneNo = parameters.phoneNo;
     if (parameters.email) params.email = parameters.email;
+
     const {data} = await axios.post(`http://localhost:8090/users/register`, params);
     if (data.code === 200) {
       message.success('注册成功');
@@ -54,6 +56,7 @@ export const userSlice = createSlice({
       state.token = null;
       state.error = null;
       state.loading = false;
+      state.userInfo = null;
     },
   },
   extraReducers: {
@@ -63,6 +66,7 @@ export const userSlice = createSlice({
     [login.fulfilled.type]: (state, action) => {
       state.token = action.payload.token;
       state.loading = false;
+      state.userInfo = action.payload;
       state.error = null;
     },
     [login.rejected.type]: (state, action: PayloadAction<string | null>) => {

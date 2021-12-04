@@ -3,6 +3,7 @@ export interface RegisterProps {
   password: string;
   phoneNo?: string;
   email?: string;
+  token?:string;
 }
 
 export interface LoginProps {
@@ -14,4 +15,5 @@ export interface UserState {
   loading: boolean;
   error: string | null;
   token: string | null;
+  userInfo: RegisterProps | null
 }
