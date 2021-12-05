@@ -1,22 +1,16 @@
-import React, {useState} from 'react'
-import {Menu, Layout, Popover, Button} from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+import React, {Suspense, useCallback, useEffect} from 'react'
+import {Layout} from 'antd';
 import styles from './index.less';
-import Logo from '@/assets/logo.svg';
 import {Outlet} from 'react-router-dom'
-import {useSelector} from "@/store/hooks";
-import {useDispatch} from 'react-redux'
 import {userSlice} from "@/store/slices";
-import {useNavigate} from 'react-router-dom';
+import {useAppDispatch, useAppState} from "@/store";
+import HeaderComponent from "@/pages/layout/components/Header";
+import SideMenuComponent from "@/pages/layout/components/SideMenu";
+import mockMenuList from "@/pages/layout/components/menuList";
+import {MenuChild, MenuList} from "@/interfaces/user.interface";
+import SuspenseFallback from "@/components/SuspenseFallback";
 
-const {Sider, Header, Content} = Layout;
-const avatar = require('@/assets/East_White.jpg');
+const {Content} = Layout;
 
 /**
  * 主页面布局组件
@@ -25,56 +19,43 @@ const avatar = require('@/assets/East_White.jpg');
  * @constructor
  */
 const MainLayout: React.FC = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const userInfo = useSelector(s => s.user.userInfo);
-  const [collapsed, setCollapsed] = useState(false);
+  const dispatch = useAppDispatch();
+  const {collapsed} = useAppState(state => state.user);
 
-  console.log('userInfo', userInfo);
-
-  const toggle = () => {
-    setCollapsed(prev => !prev)
+  // 切换左侧菜单栏的收起和展开
+  const toggleSidebarCollapsed = () => {
+    dispatch(
+      userSlice.actions.setUserState({
+        collapsed: !collapsed,
+      }),
+    );
   };
 
-  // 退出登录
-  const handleLogOut = () => {
-    dispatch(userSlice.actions.logOut());
-    navigate("/login");
-  };
+  // 初始化菜单列表，扁平化
+  const initMenuList = useCallback((menu: MenuList) => {
+    const _menuList: MenuChild[] = [];
+    menu.forEach(m => {
+      if (!m?.children?.length) {
+        _menuList.push(m);
+      } else {
+        m?.children.forEach(mu => {
+          _menuList.push(mu);
+        });
+      }
+    });
+    return _menuList;
+  }, []);
+
+  useEffect(() => {
+    dispatch(userSlice.actions.setUserState({
+      menuList: initMenuList(mockMenuList)
+    }))
+  }, [dispatch, initMenuList]);
 
   return (<Layout className={styles.mainLayout}>
-    <Sider className={styles.sideMenu} trigger={null} collapsible collapsed={collapsed}>
-      <div className={styles.logoWrapper}>
-        <Logo className={styles.logo}/>
-      </div>
-      <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
-        <Menu.Item key="1" icon={<UserOutlined/>}>
-          nav 1
-        </Menu.Item>
-        <Menu.Item key="2" icon={<VideoCameraOutlined/>}>
-          nav 2
-        </Menu.Item>
-        <Menu.Item key="3" icon={<UploadOutlined/>}>
-          nav 3
-        </Menu.Item>
-      </Menu>
-    </Sider>
+    <SideMenuComponent menuList={mockMenuList}/>
     <Layout className={styles.contentLayout}>
-      <Header className={styles.header}>
-        {
-          collapsed ? <MenuUnfoldOutlined className={styles.foldIcon} onClick={toggle}/> :
-            <MenuFoldOutlined className={styles.foldIcon} onClick={toggle}/>
-        }
-        <div className={styles.userInfo}>
-          <Popover content={<div>
-            <div style={{textAlign: "center", marginBottom: 8}}>{userInfo?.username}</div>
-            <Button onClick={handleLogOut}>退出登录</Button>
-          </div>}
-          >
-            <img className={styles.avatar} src={avatar} alt=""/>
-          </Popover>
-        </div>
-      </Header>
+      <HeaderComponent collapsed={collapsed} toggle={toggleSidebarCollapsed}/>
       <Content
         className="site-layout-background"
         style={{
@@ -83,7 +64,8 @@ const MainLayout: React.FC = () => {
           minHeight: 280,
         }}
       >
-        <Outlet/>
+        {/*<TagsView />*/}
+        <Suspense fallback={SuspenseFallback}><Outlet/></Suspense>
       </Content>
     </Layout>
   </Layout>)

@@ -4,8 +4,8 @@ import styles from './loginPage.less'
 import {LoginProps} from "@/interfaces/user.interface";
 import {useDispatch} from "react-redux";
 import {login} from "@/store/slices";
-import {useSelector} from "@/store/hooks";
 import {useNavigate} from 'react-router-dom';
+import {useAppState} from "@/store";
 
 /**
  * 登录页面
@@ -16,7 +16,7 @@ import {useNavigate} from 'react-router-dom';
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector(s => s.user.token);
+  const {token} = useAppState(state => state.user);
 
   useEffect(() => {
     if (token != null) {

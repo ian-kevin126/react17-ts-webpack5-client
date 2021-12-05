@@ -2,12 +2,15 @@ import axios from "axios";
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {LoginProps, RegisterProps, UserState} from "@/interfaces/user.interface";
 import {message} from "antd";
+import {getGlobalState} from "@/utils/getGlobalState";
 
 const initialState: UserState = {
+  ...getGlobalState(),
   loading: false,
   error: null,
   token: null,
-  userInfo: null
+  userInfo: null,
+  menuList: []
 };
 
 // 登录逻辑
@@ -58,6 +61,15 @@ export const userSlice = createSlice({
       state.loading = false;
       state.userInfo = null;
     },
+    setUserState(state, action: PayloadAction<Partial<UserState>>) {
+      // const { username } = action.payload;
+      //
+      // if (username !== state.username) {
+      //   localStorage.setItem('username', action.payload.username || '');
+      // }
+
+      Object.assign(state, action.payload);
+    }
   },
   extraReducers: {
     [login.pending.type]: (state) => {

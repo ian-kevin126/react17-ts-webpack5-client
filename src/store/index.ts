@@ -3,6 +3,7 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {userSlice} from "./slices";
 import {persistStore, persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import {useDispatch, useSelector} from "react-redux";
 
 const persistConfig = {
   key: "root",
@@ -25,6 +26,18 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-export type RootState = ReturnType<typeof store.getState>;
+// export type RootState = ReturnType<typeof store.getState>;
+
+// store.getState
+type AppState = ReturnType<typeof rootReducer>;
+type AppDispatch = typeof store.dispatch;
+
+// 二次封装dispatch hooks
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+// 二次封装useSelector
+export const useAppState = <T extends (state: AppState) => any>(
+  selector: T,
+): ReturnType<T> => useSelector(selector);
 
 export default {store, persistor};
