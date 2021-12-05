@@ -3,10 +3,21 @@
 
   .sideMenu {
     background-color: white;
+    box-shadow: 0 4px 10px #dddddd;
+    border-right: none !important;
+
     .logoWrapper {
       height: 64px;
       padding: 12px 20px;
       box-sizing: border-box;
+      display: flex;
+      align-items: center;
+
+      > div {
+        font-size: 18px;
+        margin-left: 10px;
+        font-weight: bolder;
+      }
 
       .logo {
         width: 40px;
@@ -28,6 +39,8 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      z-index: 9;
+      box-shadow: 0 4px 10px #dddddd;
 
       .foldIcon {
         font-size: 20px;
@@ -45,6 +58,33 @@
           height: 40px;
           margin-left: 16px;
           border-radius: 50%;
+        }
+      }
+    }
+
+    .contentWrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      > :nth-child(1) .ant-tabs-bar {
+        padding: 6px 0 0;
+        background: #fff;
+      }
+
+      > :nth-child(2) {
+        flex: auto;
+        overflow: hidden;
+        padding: 6px;
+        box-sizing: border-box;
+
+        .innerText {
+          background-color: #fff;
+          padding: 24px;
+          border-radius: 2px;
+          display: block;
+          line-height: 32px;
+          font-size: 16px;
         }
       }
     }

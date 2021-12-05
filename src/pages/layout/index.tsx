@@ -1,7 +1,7 @@
 import React, {Suspense, useCallback, useEffect} from 'react'
 import {Layout} from 'antd';
 import styles from './index.less';
-import {Outlet} from 'react-router-dom'
+import {Outlet, useLocation} from 'react-router-dom'
 import {userSlice} from "@/store/slices";
 import {useAppDispatch, useAppState} from "@/store";
 import HeaderComponent from "@/pages/layout/components/Header";
@@ -9,6 +9,8 @@ import SideMenuComponent from "@/pages/layout/components/SideMenu";
 import mockMenuList from "@/pages/layout/components/menuList";
 import {MenuChild, MenuList} from "@/interfaces/user.interface";
 import SuspenseFallback from "@/components/SuspenseFallback";
+import {useNavigate} from 'react-router-dom';
+import TagsView from "@/pages/layout/components/tagView";
 
 const {Content} = Layout;
 
@@ -20,6 +22,9 @@ const {Content} = Layout;
  */
 const MainLayout: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const {collapsed} = useAppState(state => state.user);
 
   // 切换左侧菜单栏的收起和展开
@@ -47,6 +52,12 @@ const MainLayout: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('/dashboard');
+    }
+  }, [navigate, location]);
+
+  useEffect(() => {
     dispatch(userSlice.actions.setUserState({
       menuList: initMenuList(mockMenuList)
     }))
@@ -56,15 +67,8 @@ const MainLayout: React.FC = () => {
     <SideMenuComponent menuList={mockMenuList}/>
     <Layout className={styles.contentLayout}>
       <HeaderComponent collapsed={collapsed} toggle={toggleSidebarCollapsed}/>
-      <Content
-        className="site-layout-background"
-        style={{
-          margin: '24px 16px',
-          padding: 24,
-          minHeight: 280,
-        }}
-      >
-        {/*<TagsView />*/}
+      <Content className={styles.contentWrapper}>
+        <TagsView />
         <Suspense fallback={SuspenseFallback}><Outlet/></Suspense>
       </Content>
     </Layout>

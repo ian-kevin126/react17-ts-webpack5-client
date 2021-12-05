@@ -4,6 +4,7 @@ import {userSlice} from "./slices";
 import {persistStore, persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import {useDispatch, useSelector} from "react-redux";
+import tagsViewSlice from "@/store/slices/tagView.slice";
 
 const persistConfig = {
   key: "root",
@@ -13,6 +14,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,
+  tagsView: tagsViewSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

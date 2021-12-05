@@ -3,9 +3,9 @@ import {MenuList, MenuProps} from "@/interfaces/user.interface";
 import styles from "@/pages/layout/index.less";
 import Logo from "@/assets/logo.svg";
 import {Layout, Menu} from "antd";
-import {useAppDispatch, useAppState} from "@/store";
+import {useAppState} from "@/store";
 import {useLocation, useNavigate} from "react-router-dom";
-import {userSlice} from "@/store/slices";
+// import {userSlice} from "@/store/slices";
 import {MenuIcon} from "@/pages/layout/components/MenuIcon";
 
 const {Sider} = Layout;
@@ -20,10 +20,10 @@ const {SubMenu, Item} = Menu;
 const SideMenuComponent: React.FC<MenuProps> = ({menuList}) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [openKeys, setOpenKeys] = useState<string[]>([]);
-  const {collapsed, device} = useAppState(state => state.user);
+  const {collapsed} = useAppState(state => state.user);
   const {pathname} = useLocation();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   useEffect(() => {
     setSelectedKeys([pathname]);
@@ -48,9 +48,9 @@ const SideMenuComponent: React.FC<MenuProps> = ({menuList}) => {
     if (menu.path === pathname) return;
     const {key, path} = menu;
     setSelectedKeys([key]);
-    if (device !== 'DESKTOP') {
-      dispatch(userSlice.actions.setUserState({collapsed: true}));
-    }
+    // if (device !== 'DESKTOP') {
+    //   dispatch(userSlice.actions.setUserState({collapsed: true}));
+    // }
     // dispatch(
     //   addTag({
     //     id: key,
@@ -70,6 +70,7 @@ const SideMenuComponent: React.FC<MenuProps> = ({menuList}) => {
     >
       <div className={styles.logoWrapper}>
         <Logo className={styles.logo}/>
+        {!collapsed && <div>East-White</div>}
       </div>
       <Menu mode="inline"
             theme="light"
