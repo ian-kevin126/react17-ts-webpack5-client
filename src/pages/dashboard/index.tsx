@@ -3,13 +3,16 @@ import { Button, Card, Col, Form, Input, Modal, Radio, Row, Table, TreeSelect } 
 import { CommonInput } from '@/components/commonSearchComponent';
 import styles from './index.less';
 import { useAppDispatch, useAppState } from '@/store';
-import { getMenuList } from '@/store/slices/menu.slice';
+import { getMenuList, operateMenuItem } from '@/store/slices/menu.slice';
 import { cleanFalsyParams } from '@/utils/common';
 
 const { TreeNode } = TreeSelect;
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
 };
 
 /**
@@ -48,6 +51,7 @@ const Index: React.FC = () => {
   // 提交表单
   const onFinish = (values: any) => {
     console.log(values);
+    dispatch(operateMenuItem({ action: 'add', ...values }));
   };
 
   // 选择父级菜单
@@ -61,8 +65,13 @@ const Index: React.FC = () => {
     form.setFieldsValue({ authority: '' });
   };
 
+  // 新建或编辑菜单
+  const handleSubmit = () => {
+    // TODO:
+  };
+
   useEffect(() => {
-    form.setFieldsValue({ menuType: '1' });
+    form.setFieldsValue({ menuType: 1 });
   }, [form]);
 
   return (
@@ -103,6 +112,7 @@ const Index: React.FC = () => {
         okText="确定"
         cancelText="取消"
         onCancel={() => setAddMenuItemModal(false)}
+        onOk={handleSubmit}
       >
         <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
           {/* 选择父级菜单 */}
@@ -131,9 +141,9 @@ const Index: React.FC = () => {
 
           {/* 菜单类型 */}
           <Form.Item name="menuType" label="菜单类型" rules={[{ required: false }]}>
-            <Radio.Group name="radiogroup" defaultValue={'1'} onChange={onChangeMenuType}>
-              <Radio value={'1'}>菜单</Radio>
-              <Radio value={'2'}>按钮</Radio>
+            <Radio.Group name="radiogroup" defaultValue={1} onChange={onChangeMenuType}>
+              <Radio value={1}>菜单</Radio>
+              <Radio value={2}>按钮</Radio>
             </Radio.Group>
           </Form.Item>
 
@@ -148,7 +158,7 @@ const Index: React.FC = () => {
             shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
           >
             {({ getFieldValue }) =>
-              getFieldValue('menuType') === '1' ? (
+              getFieldValue('menuType') === 1 ? (
                 <Form.Item name="icon" label="菜单图标" rules={[{ required: false }]}>
                   <Input placeholder="请输入菜单图标" />
                 </Form.Item>
@@ -162,7 +172,7 @@ const Index: React.FC = () => {
             shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
           >
             {({ getFieldValue }) =>
-              getFieldValue('menuType') === '1' ? (
+              getFieldValue('menuType') === 1 ? (
                 <Form.Item name="path" label="路由地址" rules={[{ required: false }]}>
                   <Input placeholder="请输入路由地址" />
                 </Form.Item>
@@ -176,7 +186,7 @@ const Index: React.FC = () => {
             shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
           >
             {({ getFieldValue }) =>
-              getFieldValue('menuType') === '1' ? (
+              getFieldValue('menuType') === 1 ? (
                 <Form.Item name="component" label="组件路径" rules={[{ required: false }]}>
                   <Input placeholder="请输入组件路径" />
                 </Form.Item>
@@ -190,11 +200,11 @@ const Index: React.FC = () => {
             shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
           >
             {({ getFieldValue }) =>
-              getFieldValue('menuType') === '1' ? (
+              getFieldValue('menuType') === 1 ? (
                 <Form.Item name="menuState" label="菜单状态" rules={[{ required: false }]}>
-                  <Radio.Group name="radiogroup" defaultValue={'1'}>
-                    <Radio value={'1'}>正常</Radio>
-                    <Radio value={'2'}>停用</Radio>
+                  <Radio.Group name="radiogroup" defaultValue={1}>
+                    <Radio value={1}>正常</Radio>
+                    <Radio value={2}>停用</Radio>
                   </Radio.Group>
                 </Form.Item>
               ) : null
@@ -208,12 +218,18 @@ const Index: React.FC = () => {
           >
             {({ getFieldValue }) => {
               console.log('getFieldValue', getFieldValue);
-              return getFieldValue('menuType') === '2' ? (
+              return getFieldValue('menuType') === 2 ? (
                 <Form.Item name="authority" label="权限标识" rules={[{ required: false }]}>
                   <Input placeholder="请输入权限标识" />
                 </Form.Item>
               ) : null;
             }}
+          </Form.Item>
+
+          <Form.Item {...tailLayout}>
+            <Button type="primary" htmlType="submit">
+              提交
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
