@@ -1,3 +1,4 @@
+import { Card } from 'antd';
 import React from 'react';
 
 /**
@@ -7,11 +8,7 @@ import React from 'react';
  * @constructor
  */
 const Index: React.FC = () => {
-  return (
-    <div>
-      Dashboard
-    </div>
-  )
+  return <Card style={{ margin: 20 }}>Dashboard111222</Card>;
 };
 
 export default Index;
