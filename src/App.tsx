@@ -1,12 +1,17 @@
-import React from 'react';
-import Logo from '@/assets/logo.svg';
+import React, {Suspense} from 'react';
+import routeList from '@/routes'
+import {useRoutes} from "react-router-dom";
+import SuspenseFallback from "@/components/SuspenseFallback";
 
 const App: React.FC = () => {
+  const element = useRoutes(routeList)
+
   return (
-    <div>
-      <Logo style={{ width: 100, height: 100 }} />
-      <h1>My React and TypeScript App!</h1>
-    </div>
+    <Suspense fallback={<SuspenseFallback/>}>
+      <>
+        {element}
+      </>
+    </Suspense>
   );
 };
 
