@@ -1,11 +1,11 @@
 import React from 'react';
 import { HeaderProps } from '@/interfaces/user.interface';
 import styles from '@/pages/layout/index.less';
-import { Button, Popover, Layout } from 'antd';
+import { Layout, Menu, Dropdown, Button } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons/lib';
 import { useAppDispatch, useAppState } from '@/store';
 import { userSlice } from '@/store/slices';
-import Logo from '@/assets/logo.svg';
+// import Logo from '@/assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
 
 const { Header } = Layout;
@@ -29,10 +29,25 @@ const HeaderComponent: React.FC<HeaderProps> = ({ toggle, collapsed }) => {
     navigate('/login');
   };
 
+  // 个人信息和退出登录下拉菜单
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <div style={{ textAlign: 'center', fontWeight: 'bold' }}>{userInfo?.username}</div>
+      </Menu.Item>
+      <Menu.Item>
+        <Button type="link" onClick={handleLogOut}>
+          退出登录
+        </Button>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <Header className={styles.header}>
       <div className={styles.logoWrapper} style={{ width: collapsed ? 100 : 240 }}>
-        <Logo className={styles.logo} />
+        <img className={styles.logo} src={avatar} alt="" />
+        {/* <Logo className={styles.logo} /> */}
         {!collapsed && <div>East-White</div>}
       </div>
       <div className={styles.headerRight}>
@@ -42,16 +57,9 @@ const HeaderComponent: React.FC<HeaderProps> = ({ toggle, collapsed }) => {
           <MenuFoldOutlined className={styles.foldIcon} onClick={toggle} />
         )}
         <div className={styles.userInfo}>
-          <Popover
-            content={
-              <div>
-                <div className={styles.userName}>{userInfo?.username}</div>
-                <Button onClick={handleLogOut}>退出登录</Button>
-              </div>
-            }
-          >
+          <Dropdown overlay={menu}>
             <img className={styles.avatar} src={avatar} alt="" />
-          </Popover>
+          </Dropdown>
         </div>
       </div>
     </Header>

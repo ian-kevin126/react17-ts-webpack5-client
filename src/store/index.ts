@@ -1,10 +1,11 @@
-import {actionLog} from "./middlewares/actionLog";
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import {userSlice} from "./slices";
-import {persistStore, persistReducer} from "redux-persist";
+import { actionLog } from "./middlewares/actionLog";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { userSlice } from "./slices";
+import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import tagsViewSlice from "@/store/slices/tagView.slice";
+import menuSlice from '@/store/slices/menu.slice';
 
 const persistConfig = {
   key: "root",
@@ -15,6 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userSlice.reducer,
   tagsView: tagsViewSlice.reducer,
+  menu: menuSlice.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -42,4 +44,4 @@ export const useAppState = <T extends (state: AppState) => any>(
   selector: T,
 ): ReturnType<T> => useSelector(selector);
 
-export default {store, persistor};
+export default { store, persistor };

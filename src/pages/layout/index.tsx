@@ -73,7 +73,9 @@ const MainLayout: React.FC = () => {
         <Content className={styles.contentWrapper}>
           <TagsView />
           <Suspense fallback={SuspenseFallback}>
-            <Outlet />
+            <div className={styles.content}>
+              <Outlet />
+            </div>
           </Suspense>
         </Content>
       </Layout>

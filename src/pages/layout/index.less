@@ -28,6 +28,7 @@
       .logo {
         width: 40px;
         height: 40px;
+        border-radius: 50%;
         animation: rotate 5s linear infinite;
       }
     }
@@ -43,15 +44,17 @@
       }
 
       .userInfo {
+        padding-right: 30px;
+        box-sizing: border-box;
+
         .userName {
           text-align: center;
-          margin-bottom: 8px;
+          font-weight: bold;
         }
 
         .avatar {
           width: 40px;
           height: 40px;
-          margin-left: 16px;
           border-radius: 50%;
         }
       }
@@ -73,6 +76,10 @@
       display: flex;
       flex-direction: column;
       flex: 1;
+
+      .content {
+        margin: 12px;
+      }
 
       > :nth-child(1) .ant-tabs-bar {
         padding: 6px 0 0;
