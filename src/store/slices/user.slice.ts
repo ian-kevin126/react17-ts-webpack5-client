@@ -1,8 +1,8 @@
 import axios from "axios";
-import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {LoginProps, RegisterProps, UserState} from "@/interfaces/user.interface";
-import {message} from "antd";
-import {getGlobalState} from "@/utils/getGlobalState";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { LoginProps, RegisterProps, UserState } from "@/interfaces/user.interface";
+import { message } from "antd";
+import { getGlobalState } from "@/utils/getGlobalState";
 
 const initialState: UserState = {
   ...getGlobalState(),
@@ -21,7 +21,7 @@ export const login = createAsyncThunk(
       username: parameters.username,
       password: parameters.password,
     };
-    const {data} = await axios.post(`http://localhost:8090/users/login`, params);
+    const { data } = await axios.post(`http://localhost:8090/api/users/login`, params);
     if (data.code === 200) {
       message.success('登陆成功');
       return data.data;
@@ -42,7 +42,7 @@ export const register = createAsyncThunk(
     if (parameters.phoneNo) params.phoneNo = parameters.phoneNo;
     if (parameters.email) params.email = parameters.email;
 
-    const {data} = await axios.post(`http://localhost:8090/users/register`, params);
+    const { data } = await axios.post(`http://localhost:8090/users/register`, params);
     if (data.code === 200) {
       message.success('注册成功');
     } else {

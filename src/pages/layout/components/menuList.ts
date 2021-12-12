@@ -1,4 +1,4 @@
-import {MenuList} from "@/interfaces/user.interface";
+import { MenuList } from "@/interfaces/user.interface";
 
 const mockMenuList: MenuList = [
   {
