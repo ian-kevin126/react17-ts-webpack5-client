@@ -2,28 +2,11 @@ import { cleanFalsyParams } from './../../utils/common';
 import axios from "axios";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { message } from "antd";
+import { InitialStateProps, MenuItemProps, MenuListProps } from '@/interfaces/menu.interface';
 
-interface MenuListProps {
-  menuName?: string;
-  menuState?: string;
-}
-
-interface MenuItemProps {
-  _id?: string;
-  action: string;
-  menuType: number; //菜单类型
-  menuName: string; //菜单名称
-  menuCode?: string; //权限标识
-  path?: string; //路由地址
-  icon?: string; //图标
-  component?: string; //组件地址
-  menuState?: number; //菜单状态
-  parentId: string[],
-}
-
-const initialState = {
+const initialState: InitialStateProps = {
   loading: false,
-  // error: null,
+  error: null,
   menuList: []
 };
 
@@ -50,7 +33,7 @@ export const getMenuList = createAsyncThunk(
  * 新增、编辑、删除菜单
  */
 export const operateMenuItem = createAsyncThunk(
-  "menu/list",
+  "menu/operate",
   async (parameters: MenuItemProps) => {
     const params: MenuItemProps = cleanFalsyParams({
       _id: parameters._id,
@@ -99,12 +82,11 @@ const menuSlice = createSlice({
     [getMenuList.fulfilled.type]: (state, action) => {
       state.loading = false;
       state.menuList = action.payload;
-      // state.error = null;
+      state.error = null;
     },
     [getMenuList.rejected.type]: (state, action: PayloadAction<string | null>) => {
       state.loading = false;
-      console.log('action.payload', action)
-      // state.error = action.payload;
+      state.error = action.payload;
     },
     [operateMenuItem.pending.type]: (state) => {
       state.loading = true;

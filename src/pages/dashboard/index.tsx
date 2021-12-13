@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Input, Modal, Radio, Row, Table, TreeSelect } from 'antd';
 import { CommonInput } from '@/components/commonSearchComponent';
 import styles from './index.less';
 import { useAppDispatch, useAppState } from '@/store';
 import { getMenuList, operateMenuItem } from '@/store/slices/menu.slice';
 import { cleanFalsyParams } from '@/utils/common';
+import { ColumnsType } from 'antd/lib/table';
+import { MenuItemProps } from '@/interfaces/menu.interface';
 
 const { TreeNode } = TreeSelect;
 const layout = {
@@ -26,7 +28,7 @@ const Index: React.FC = () => {
   const [menuState, setMenuState] = useState(''); // 菜单状态
   const [parentId, setParentId] = useState(undefined);
   const [addMenuItemModal, setAddMenuItemModal] = useState(false); // 增加菜单弹框
-  const { menuList } = useAppState((state) => state.menu);
+  const { menuList, loading } = useAppState((state) => state.menu);
   const dispatch = useAppDispatch();
 
   console.log('menuList', menuList);
@@ -39,9 +41,9 @@ const Index: React.FC = () => {
   };
 
   // 查询
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     dispatch(getMenuList(cleanFalsyParams({ menuName, menuState })));
-  };
+  }, [dispatch, menuName, menuState]);
 
   // 新增菜单
   const addMenuItem = () => {
@@ -70,9 +72,55 @@ const Index: React.FC = () => {
     // TODO:
   };
 
+  const columns: ColumnsType<MenuItemProps> = [
+    {
+      title: '菜单名称',
+      dataIndex: 'menuName',
+      key: 'menuName',
+      width: '20%',
+    },
+    {
+      title: '菜单图标',
+      dataIndex: 'icon',
+      key: 'icon',
+      width: '20%',
+    },
+    {
+      title: '菜单路径',
+      dataIndex: 'path',
+      key: 'path',
+      width: '20%',
+    },
+    {
+      title: '组件路径',
+      dataIndex: 'component',
+      key: 'component',
+      width: '20%',
+    },
+    {
+      title: '操作',
+      dataIndex: 'component',
+      key: 'component',
+      width: '20%',
+      align: 'center',
+      render: () => (
+        <>
+          <Button type={'link'}>编辑</Button>
+          <Button style={{ color: 'red' }} type={'link'}>
+            删除
+          </Button>
+        </>
+      ),
+    },
+  ];
+
   useEffect(() => {
     form.setFieldsValue({ menuType: 1 });
   }, [form]);
+
+  useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
 
   return (
     <>
@@ -102,7 +150,7 @@ const Index: React.FC = () => {
         </Row>
       </Card>
       <Card className={styles.menuList}>
-        <Table />
+        <Table columns={columns} dataSource={menuList} rowKey={'_id'} loading={loading} />
       </Card>
       <Modal
         title="新增菜单"

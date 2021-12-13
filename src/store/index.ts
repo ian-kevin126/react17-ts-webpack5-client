@@ -1,4 +1,4 @@
-import { actionLog } from "./middlewares/actionLog";
+// import { actionLog } from "./middlewares/actionLog";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { userSlice } from "./slices";
 import { persistStore, persistReducer } from "redux-persist";
@@ -24,7 +24,8 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // const store = createStore(rootReducer, applyMiddleware(thunk, actionLog));
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), actionLog],
+  // middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), actionLog],
+  middleware: (getDefaultMiddleware) => [...getDefaultMiddleware()],
   devTools: true,
 });
 
