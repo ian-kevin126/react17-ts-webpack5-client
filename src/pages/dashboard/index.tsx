@@ -119,6 +119,7 @@ const Index: React.FC = () => {
       key: 'component',
       width: '20%',
       align: 'center',
+      fixed: 'right',
       render: (text, record) => (
         <>
           <Button type={'link'}>编辑</Button>
