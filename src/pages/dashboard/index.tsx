@@ -29,6 +29,7 @@ const Index: React.FC = () => {
   const [parentId, setParentId] = useState(undefined);
   const [addMenuItemModal, setAddMenuItemModal] = useState(false); // 增加菜单弹框
   const { menuList, loading } = useAppState((state) => state.menu);
+  const [fresher, setFresher] = useState(false);
   const dispatch = useAppDispatch();
 
   console.log('menuList', menuList);
@@ -52,8 +53,17 @@ const Index: React.FC = () => {
 
   // 提交表单
   const onFinish = (values: any) => {
-    console.log(values);
-    dispatch(operateMenuItem({ action: 'add', ...values }));
+    console.log('values', values);
+    dispatch(
+      operateMenuItem({
+        action: 'add',
+        ...values,
+        parentId: values.parentId == undefined ? [null] : values.parentId,
+      }),
+    );
+    form.resetFields();
+    setAddMenuItemModal(false);
+    setFresher((r) => !r);
   };
 
   // 选择父级菜单
@@ -70,6 +80,12 @@ const Index: React.FC = () => {
   // 新建或编辑菜单
   const handleSubmit = () => {
     // TODO:
+  };
+
+  // 删除菜单
+  const deleteMenuItem = (id: string | undefined) => {
+    dispatch(operateMenuItem({ _id: id, action: 'delete' }));
+    setFresher((r) => !r);
   };
 
   const columns: ColumnsType<MenuItemProps> = [
@@ -103,10 +119,10 @@ const Index: React.FC = () => {
       key: 'component',
       width: '20%',
       align: 'center',
-      render: () => (
+      render: (text, record) => (
         <>
           <Button type={'link'}>编辑</Button>
-          <Button style={{ color: 'red' }} type={'link'}>
+          <Button onClick={() => deleteMenuItem(record._id)} style={{ color: 'red' }} type={'link'}>
             删除
           </Button>
         </>
@@ -120,7 +136,7 @@ const Index: React.FC = () => {
 
   useEffect(() => {
     handleSearch();
-  }, [handleSearch]);
+  }, [handleSearch, fresher]);
 
   return (
     <>
@@ -150,7 +166,9 @@ const Index: React.FC = () => {
         </Row>
       </Card>
       <Card className={styles.menuList}>
-        <Table columns={columns} dataSource={menuList} rowKey={'_id'} loading={loading} />
+        <div style={{ overflowY: 'scroll' }}>
+          <Table columns={columns} dataSource={menuList} rowKey={'_id'} loading={loading} />
+        </div>
       </Card>
       <Modal
         title="新增菜单"

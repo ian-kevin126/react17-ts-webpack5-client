@@ -1,4 +1,3 @@
-import { cleanFalsyParams } from './../../utils/common';
 import axios from "axios";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { message } from "antd";
@@ -35,7 +34,7 @@ export const getMenuList = createAsyncThunk(
 export const operateMenuItem = createAsyncThunk(
   "menu/operate",
   async (parameters: MenuItemProps) => {
-    const params: MenuItemProps = cleanFalsyParams({
+    const params: MenuItemProps = {
       _id: parameters._id,
       action: parameters.action,
       menuType: parameters.menuType,
@@ -45,7 +44,7 @@ export const operateMenuItem = createAsyncThunk(
       path: parameters.path,
       icon: parameters.icon,
       component: parameters.component,
-    }) as MenuItemProps;
+    } as MenuItemProps;
     const { data } = await axios.post(`http://localhost:8090/api/menu/operate`, params);
     if (data.code === 200) {
       return data.data;
