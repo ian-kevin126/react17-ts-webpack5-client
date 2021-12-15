@@ -32,13 +32,13 @@ const Index: React.FC = () => {
   const [fresher, setFresher] = useState(false);
   const dispatch = useAppDispatch();
 
-  console.log('menuList', menuList);
-
   const [form] = Form.useForm();
 
   // 重置
   const handleReset = () => {
-    // TODO:
+    setMenuName('');
+    setMenuState('');
+    setFresher((r) => !r);
   };
 
   // 查询
@@ -53,7 +53,6 @@ const Index: React.FC = () => {
 
   // 提交表单
   const onFinish = (values: any) => {
-    console.log('values', values);
     dispatch(
       operateMenuItem({
         action: 'add',
@@ -83,8 +82,18 @@ const Index: React.FC = () => {
   };
 
   // 删除菜单
-  const deleteMenuItem = (id: string | undefined) => {
+  const handleDeleteMenuItem = (id: string | undefined) => {
     dispatch(operateMenuItem({ _id: id, action: 'delete' }));
+    setFresher((r) => !r);
+  };
+
+  // 删除菜单
+  const handleEditMenuItem = (record: MenuItemProps) => {
+    setAddMenuItemModal(true);
+    form.setFieldsValue({
+      ...record,
+    });
+    dispatch(operateMenuItem({ _id: record?._id, action: 'edit' }));
     setFresher((r) => !r);
   };
 
@@ -122,8 +131,14 @@ const Index: React.FC = () => {
       fixed: 'right',
       render: (text, record) => (
         <>
-          <Button type={'link'}>编辑</Button>
-          <Button onClick={() => deleteMenuItem(record._id)} style={{ color: 'red' }} type={'link'}>
+          <Button type={'link'} onClick={() => handleEditMenuItem(record)}>
+            编辑
+          </Button>
+          <Button
+            onClick={() => handleDeleteMenuItem(record._id)}
+            style={{ color: 'red' }}
+            type={'link'}
+          >
             删除
           </Button>
         </>
