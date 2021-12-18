@@ -1,11 +1,13 @@
-import React, {lazy} from 'react'
-import MainLayout from "@/pages/layout";
-import LoginPage from '@/pages/user/LoginPage'
-import RegisterPage from '@/pages/user/RegisterPage'
-import {PartialRouteObject} from 'react-router'
+import React, { lazy } from 'react';
+import MainLayout from '@/pages/layout';
+import LoginPage from '@/pages/user/LoginPage';
+import RegisterPage from '@/pages/user/RegisterPage';
+import { PartialRouteObject } from 'react-router';
 
 const Dashboard = lazy(async () => import(/* webpackChunkName: "dashboard" */ '@/pages/dashboard'));
-const Documentation = lazy(async () => import(/* webpackChunkName: "dashboard" */ '@/pages/documentation'));
+const Documentation = lazy(
+  async () => import(/* webpackChunkName: "dashboard" */ '@/pages/documentation'),
+);
 const Guide = lazy(async () => import(/* webpackChunkName: "dashboard" */ '@/pages/guide'));
 const NotFound = lazy(async () => import(/* webpackChunkName: "dashboard" */ '@/pages/404'));
 
@@ -15,31 +17,34 @@ const NotFound = lazy(async () => import(/* webpackChunkName: "dashboard" */ '@/
 const routeList: PartialRouteObject[] = [
   {
     path: 'login',
-    element: (<LoginPage/>)
-  }, {
+    element: <LoginPage />,
+  },
+  {
     path: 'register',
-    element: (<RegisterPage/>)
-  }, {
+    element: <RegisterPage />,
+  },
+  {
     path: '/',
-    element: (<MainLayout/>),
+    element: <MainLayout />,
     children: [
       {
         path: 'dashboard',
-        element: (<Dashboard/>)
-      }, {
+        element: <Dashboard />,
+      },
+      {
         path: 'documentation',
-        element: (<Documentation/>)
-      }, {
+        element: <Documentation />,
+      },
+      {
         path: 'guide',
-        element: (<Guide/>)
-      }, {
+        element: <Guide />,
+      },
+      {
         path: '*',
-        element: (<NotFound/>),
-      }
-    ]
-  }
-
+        element: <NotFound />,
+      },
+    ],
+  },
 ];
 
 export default routeList;
-

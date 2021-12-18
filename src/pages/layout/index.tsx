@@ -1,18 +1,18 @@
-import React, {Suspense, useCallback, useEffect} from 'react'
-import {Layout} from 'antd';
+import React, { Suspense, useCallback, useEffect } from 'react';
+import { Layout } from 'antd';
 import styles from './index.less';
-import {Outlet, useLocation} from 'react-router-dom'
-import {userSlice} from "@/store/slices";
-import {useAppDispatch, useAppState} from "@/store";
-import HeaderComponent from "@/pages/layout/components/Header";
-import SideMenuComponent from "@/pages/layout/components/SideMenu";
-import mockMenuList from "@/pages/layout/components/menuList";
-import {MenuChild, MenuList} from "@/interfaces/user.interface";
-import SuspenseFallback from "@/components/SuspenseFallback";
-import {useNavigate} from 'react-router-dom';
-import TagsView from "@/pages/layout/components/tagView";
+import { Outlet, useLocation } from 'react-router-dom';
+import { userSlice } from '@/store/slices';
+import { useAppDispatch, useAppState } from '@/store';
+import HeaderComponent from '@/pages/layout/components/Header';
+import SideMenuComponent from '@/pages/layout/components/SideMenu';
+import mockMenuList from '@/pages/layout/components/menuList';
+import { MenuChild, MenuList } from '@/interfaces/user.interface';
+import SuspenseFallback from '@/components/SuspenseFallback';
+import { useNavigate } from 'react-router-dom';
+import TagsView from '@/pages/layout/components/tagView';
 
-const {Content} = Layout;
+const { Content } = Layout;
 
 /**
  * 主页面布局组件
@@ -25,7 +25,7 @@ const MainLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const {collapsed} = useAppState(state => state.user);
+  const { collapsed } = useAppState((state) => state.user);
 
   // 切换左侧菜单栏的收起和展开
   const toggleSidebarCollapsed = () => {
@@ -39,11 +39,11 @@ const MainLayout: React.FC = () => {
   // 初始化菜单列表，扁平化
   const initMenuList = useCallback((menu: MenuList) => {
     const _menuList: MenuChild[] = [];
-    menu.forEach(m => {
+    menu.forEach((m) => {
       if (!m?.children?.length) {
         _menuList.push(m);
       } else {
-        m?.children.forEach(mu => {
+        m?.children.forEach((mu) => {
           _menuList.push(mu);
         });
       }
@@ -58,21 +58,29 @@ const MainLayout: React.FC = () => {
   }, [navigate, location]);
 
   useEffect(() => {
-    dispatch(userSlice.actions.setUserState({
-      menuList: initMenuList(mockMenuList)
-    }))
+    dispatch(
+      userSlice.actions.setUserState({
+        menuList: initMenuList(mockMenuList),
+      }),
+    );
   }, [dispatch, initMenuList]);
 
-  return (<Layout className={styles.mainLayout}>
-    <SideMenuComponent menuList={mockMenuList}/>
-    <Layout className={styles.contentLayout}>
-      <HeaderComponent collapsed={collapsed} toggle={toggleSidebarCollapsed}/>
-      <Content className={styles.contentWrapper}>
-        <TagsView />
-        <Suspense fallback={SuspenseFallback}><Outlet/></Suspense>
-      </Content>
+  return (
+    <Layout className={styles.mainLayout}>
+      <HeaderComponent collapsed={collapsed} toggle={toggleSidebarCollapsed} />
+      <Layout className={styles.contentLayout}>
+        <SideMenuComponent menuList={mockMenuList} />
+        <Content className={styles.contentWrapper}>
+          <TagsView />
+          <Suspense fallback={SuspenseFallback}>
+            <div className={styles.content}>
+              <Outlet />
+            </div>
+          </Suspense>
+        </Content>
+      </Layout>
     </Layout>
-  </Layout>)
+  );
 };
 
 export default MainLayout;

@@ -1,16 +1,22 @@
 .mainLayout {
   height: 100vh;
 
-  .sideMenu {
+  .header {
     background-color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    z-index: 9;
     box-shadow: 0 4px 10px #dddddd;
-    border-right: none !important;
+    padding: 0;
 
     .logoWrapper {
+      width: 200px;
       height: 64px;
-      padding: 12px 20px;
       box-sizing: border-box;
       display: flex;
+      justify-content: center;
       align-items: center;
 
       > div {
@@ -22,9 +28,43 @@
       .logo {
         width: 40px;
         height: 40px;
+        border-radius: 50%;
         animation: rotate 5s linear infinite;
       }
     }
+
+    .headerRight {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      .foldIcon {
+        font-size: 20px;
+      }
+
+      .userInfo {
+        padding-right: 30px;
+        box-sizing: border-box;
+
+        .userName {
+          text-align: center;
+          font-weight: bold;
+        }
+
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+  .sideMenu {
+    background-color: white;
+    box-shadow: 0 4px 10px #dddddd;
+    border-right: none !important;
 
     .menu {
       border-right: none !important;
@@ -32,40 +72,14 @@
   }
 
   .contentLayout {
-    .header {
-      padding: 0 50px 0 10px;
-      background-color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      z-index: 9;
-      box-shadow: 0 4px 10px #dddddd;
-
-      .foldIcon {
-        font-size: 20px;
-      }
-
-      .userInfo {
-
-        .username {
-          text-align: center;
-          margin-bottom: 8px;
-        }
-
-        .avatar {
-          width: 40px;
-          height: 40px;
-          margin-left: 16px;
-          border-radius: 50%;
-        }
-      }
-    }
-
     .contentWrapper {
       display: flex;
       flex-direction: column;
       flex: 1;
+
+      .content {
+        margin: 12px;
+      }
 
       > :nth-child(1) .ant-tabs-bar {
         padding: 6px 0 0;
@@ -74,7 +88,7 @@
 
       > :nth-child(2) {
         flex: auto;
-        overflow: hidden;
+        // overflow: hidden;
         padding: 6px;
         box-sizing: border-box;
 
@@ -90,7 +104,6 @@
     }
   }
 }
-
 
 /* 通过@keyframes规则,能够创建动画, 定义动画的名称 可自己定义 */
 @keyframes rotate {
